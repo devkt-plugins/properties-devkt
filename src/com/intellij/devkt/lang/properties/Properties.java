@@ -1,5 +1,6 @@
 package com.intellij.devkt.lang.properties;
 
+import com.intellij.devkt.lang.properties.parsing.PropertiesHighlightingLexer;
 import com.intellij.devkt.lang.properties.parsing.PropertiesParserDefinition;
 import com.intellij.devkt.lang.properties.psi.PropertiesTokenTypes;
 import com.intellij.devkt.lang.properties.psi.impl.PropertyImpl;
@@ -9,6 +10,8 @@ import org.ice1000.devkt.openapi.ColorScheme;
 import org.ice1000.devkt.openapi.ExtendedDevKtLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.kotlin.com.intellij.lexer.Lexer;
+import org.jetbrains.kotlin.com.intellij.openapi.project.Project;
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement;
 import org.jetbrains.kotlin.com.intellij.psi.StringEscapesTokenTypes;
 import org.jetbrains.kotlin.com.intellij.psi.TokenType;
@@ -29,6 +32,11 @@ public class Properties<T> extends ExtendedDevKtLanguage<T> {
 	@Override
 	public @NotNull Icon getIcon() {
 		return PropretiesIcons.FILE;
+	}
+
+	@Override
+	public @NotNull Lexer createLexer(@NotNull Project project) {
+		return new PropertiesHighlightingLexer();
 	}
 
 	@Override
