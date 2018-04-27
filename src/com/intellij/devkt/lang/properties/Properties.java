@@ -10,8 +10,10 @@ import org.ice1000.devkt.openapi.ColorScheme;
 import org.ice1000.devkt.openapi.ExtendedDevKtLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.kotlin.com.intellij.lang.ASTNode;
 import org.jetbrains.kotlin.com.intellij.lexer.Lexer;
 import org.jetbrains.kotlin.com.intellij.openapi.project.Project;
+import org.jetbrains.kotlin.com.intellij.openapi.util.TextRange;
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement;
 import org.jetbrains.kotlin.com.intellij.psi.StringEscapesTokenTypes;
 import org.jetbrains.kotlin.com.intellij.psi.TokenType;
@@ -68,7 +70,12 @@ public class Properties<T> extends ExtendedDevKtLanguage<T> {
 		super.annotate(element, document, colorScheme);
 		if (element instanceof PropertyImpl) {
 			PropertyImpl property = (PropertyImpl) element;
-
+			ASTNode valueNode = property.getValueNode();
+			if (null == valueNode) return;
+			String text = valueNode.getText();
+			int backSlashIndex = 0;
+			while ((backSlashIndex = text.indexOf("\\\n", backSlashIndex)) != -1)
+				document.highlight(new TextRange(backSlashIndex, backSlashIndex + 1), colorScheme.getKeywords());
 		}
 	}
 }
