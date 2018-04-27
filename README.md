@@ -1,9 +1,7 @@
-# plugin-template
+# Properties for DevKt
 
-This is the template of the plugin project.
 
-Things to change before coding:
 
-+ `your-language-devkt` in [settings.gradle.kts](settings.gradle.kts)
-+ `your.package.name` in [build.gradle.kts](build.gradle.kts)
+Properties support for devkt, based on the properties plugin of [intellij-community][0].
 
+  [0]: https://github.com/JetBrains/intellij-community
