@@ -3,18 +3,13 @@ package com.intellij.devkt.lang.properties;
 import com.intellij.devkt.lang.properties.parsing.PropertiesHighlightingLexer;
 import com.intellij.devkt.lang.properties.parsing.PropertiesParserDefinition;
 import com.intellij.devkt.lang.properties.psi.PropertiesTokenTypes;
-import com.intellij.devkt.lang.properties.psi.impl.PropertyImpl;
 import org.ice1000.devkt.ASTToken;
-import org.ice1000.devkt.openapi.AnnotationHolder;
 import org.ice1000.devkt.openapi.ColorScheme;
 import org.ice1000.devkt.openapi.ExtendedDevKtLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.kotlin.com.intellij.lang.ASTNode;
 import org.jetbrains.kotlin.com.intellij.lexer.Lexer;
 import org.jetbrains.kotlin.com.intellij.openapi.project.Project;
-import org.jetbrains.kotlin.com.intellij.openapi.util.TextRange;
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement;
 import org.jetbrains.kotlin.com.intellij.psi.StringEscapesTokenTypes;
 import org.jetbrains.kotlin.com.intellij.psi.TokenType;
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType;
@@ -63,19 +58,5 @@ public class Properties<T> extends ExtendedDevKtLanguage<T> {
 		else if (type == StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN) return colorScheme.getUnknown();
 		else if (type == StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN) return colorScheme.getStringEscape();
 		else return super.attributesOf(type, colorScheme);
-	}
-
-	@Override
-	public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder<? super T> document, @NotNull ColorScheme<? extends T> colorScheme) {
-		super.annotate(element, document, colorScheme);
-		if (element instanceof PropertyImpl) {
-			PropertyImpl property = (PropertyImpl) element;
-			ASTNode valueNode = property.getValueNode();
-			if (null == valueNode) return;
-			String text = valueNode.getText();
-			int backSlashIndex = 0;
-			while ((backSlashIndex = text.indexOf("\\\n", backSlashIndex)) != -1)
-				document.highlight(new TextRange(backSlashIndex, backSlashIndex + 1), colorScheme.getKeywords());
-		}
 	}
 }
