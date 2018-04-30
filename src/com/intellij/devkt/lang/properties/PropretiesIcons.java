@@ -9,6 +9,6 @@ import javax.swing.*;
  * @author ice1000
  */
 public interface PropretiesIcons {
-	@NotNull Icon FILE = IconLoader.getIcon("icon/properties.png");
-	@NotNull Icon XML_FILE = IconLoader.getIcon("icon/xmlProperties.png");
+	@NotNull Icon FILE = IconLoader.getIcon("/icon/properties.png");
+	@NotNull Icon XML_FILE = IconLoader.getIcon("/icon/xmlProperties.png");
 }

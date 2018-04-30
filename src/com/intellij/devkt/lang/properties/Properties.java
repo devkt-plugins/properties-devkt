@@ -1,5 +1,6 @@
 package com.intellij.devkt.lang.properties;
 
+import com.intellij.devkt.lang.properties.parsing.PropertiesHighlightingLexer;
 import com.intellij.devkt.lang.properties.parsing.PropertiesParserDefinition;
 import com.intellij.devkt.lang.properties.psi.PropertiesTokenTypes;
 import org.ice1000.devkt.ASTToken;
@@ -7,6 +8,9 @@ import org.ice1000.devkt.openapi.ColorScheme;
 import org.ice1000.devkt.openapi.ExtendedDevKtLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.kotlin.com.intellij.lexer.Lexer;
+import org.jetbrains.kotlin.com.intellij.openapi.project.Project;
+import org.jetbrains.kotlin.com.intellij.psi.StringEscapesTokenTypes;
 import org.jetbrains.kotlin.com.intellij.psi.TokenType;
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType;
 
@@ -28,6 +32,11 @@ public class Properties<T> extends ExtendedDevKtLanguage<T> {
 	}
 
 	@Override
+	public @NotNull Lexer createLexer(@NotNull Project project) {
+		return new PropertiesHighlightingLexer();
+	}
+
+	@Override
 	public boolean invokeAutoPopup(@NotNull ASTToken currentElement, @NotNull String inputString) {
 		return inputString.equals("=") || inputString.equals(":");
 	}
@@ -45,6 +54,9 @@ public class Properties<T> extends ExtendedDevKtLanguage<T> {
 		else if (type == PropertiesTokenTypes.KEY_CHARACTERS) return colorScheme.getKeywords();
 		else if (type == PropertiesTokenTypes.VALUE_CHARACTERS) return colorScheme.getIdentifiers();
 		else if (type == PropertiesTokenTypes.KEY_VALUE_SEPARATOR) return colorScheme.getOperators();
+		else if (type == StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN) return colorScheme.getUnknown();
+		else if (type == StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN) return colorScheme.getUnknown();
+		else if (type == StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN) return colorScheme.getStringEscape();
 		else return super.attributesOf(type, colorScheme);
 	}
 }
